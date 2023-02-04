@@ -3,14 +3,11 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import Axios from 'axios';
-import VuePortal from '@linusborg/vue-simple-portal'
 Vue.config.productionTip = false;
 
 // set auth header
 Axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
-Vue.use(VuePortal, {
-  name: 'portal', // optional, use to rename component
-})
+
 new Vue({
   router,
   store,

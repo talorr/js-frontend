@@ -61,21 +61,26 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+h2{
+  margin-left: 0;
+  font-weight: 400;
+  }
 form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 form input {
-  padding-left: 8px;
   width: 200px;
   height: 30px;
   margin: 5px;
-  border-radius: 40px;
   box-shadow: none;
-  border: 0.5px solid rgb(207, 207, 207);
   outline: none;
+  font-weight: 200;
+  padding: 2px 5px;
+  border: 1px solid rgba(0, 0, 0, 0.234);
+  border-radius: 8px;
 }
 form button {
   width: 150px;

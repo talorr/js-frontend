@@ -37,6 +37,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+
 }
 body{margin: 0;
 
@@ -48,6 +49,10 @@ nav {
 nav a {
   font-weight: bold;
   color: #2c3e50;
+  cursor: pointer;
+}
+nav a:hover{
+  color:#596570;
 }
 
 nav a.router-link-exact-active {
@@ -77,5 +82,8 @@ nav a.router-link-exact-active {
 }
 h2{
   margin-left: 20px;
+}
+h2:hover{
+  color: rgb(80, 80, 80)
 }
 </style>
