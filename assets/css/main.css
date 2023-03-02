@@ -3,14 +3,16 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
 html {
     font-size: 16px;
 }
+
 * {
     font-family: 'Inter', sans-serif;
 }
 
-nav > a {
+nav>a {
     display: flex;
     align-items: center;
     font-weight: 500;
@@ -21,7 +23,7 @@ nav > a {
 }
 
 @media screen and (max-width: 639px) {
-    nav > a {
+    nav>a {
         flex-direction: column;
         text-align: center;
         font-size: .75rem;
@@ -39,7 +41,9 @@ nav > a {
     background-size: cover;
     border-radius: 20px;
 }
-
+.dark {
+    background-color: #262626;
+}
 #stateact {
     background-color: rgb(241, 245, 249);
     color: rgb(30, 41, 59);

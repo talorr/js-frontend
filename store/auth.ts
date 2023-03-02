@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
-
 interface UserPayloadInterface {
-  email: string;
+  login: string;
   password: string;
 }
 export const useAuthStore = defineStore("auth", {
@@ -9,60 +8,56 @@ export const useAuthStore = defineStore("auth", {
     authenticated: false,
     loading: false,
   }),
+
   actions: {
-    async authenticateUser({ email, password }: UserPayloadInterface) {
+    async authenticateUser({ login, password }: UserPayloadInterface) {
       // Логика авторизации
-      const { data, pending }: any = await useFetch(
-        "http://localhost/laravel/public/api/login",
-        {
-          method: "post",
-          headers: {
-            Accept: "application/json",
-          },
-          body: {
-            email,
-            password,
-          },
-        }
-      ).catch((error) => console.log("API ERROR", error));
-      this.loading = pending;
-      if (data.value) {
-        // Задаём куки
-        const token = useCookie("token");
-        token.value = data?.value?.token;
+      const res = await $fetch.raw("https://apiv1.noto.moe/user/login", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "/*/",
+        },
+        body: {
+          login: "test",
+          password: "test",
+        },
+        credentials: "include",
+      });
+
+      if (res != null) {
         this.authenticated = true; // set authenticated  state value to true
       }
     },
-    // Выход из аккаунта, удаление токена из куки
+
     async logUserOut() {
-      const token = useCookie("token");
-      const pending = await useFetch(
-        "http://localhost/laravel/public/api/logout",
-        {
-          method: "get",
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token.value}`,
-          },
-        }
-      );
+      const token = useCookie("Cookie");
+      const pending = await useFetch("https://apiv1.noto.moe/user/logout", {
+        method: "get",
+        headers: {
+          Accept: "application/json",
+        },
+      });
       console.log(pending);
       this.authenticated = false; // set authenticated  state value to false
       token.value = null; // clear the token cookie
     },
-    async getUser() {
-      const token = useCookie("token");
-      const { data: user } = await useFetch(
-        "http://localhost/laravel/public/api/user",
-        {
-          method: "get",
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token.value}`,
-          },
-        }
-      );
-      return user;
-    },
+    // async getUser() {
+    //   const token = useCookie("Cookie");
+    //   const { data: user } = await useFetch(
+    //     "http://localhost/laravel/public/api/user",
+    //     {
+    //       method: "get",
+    //       headers: {
+    //         Accept: "application/json",
+    //         Authorization: `Bearer ${token.value}`,
+    //       },
+    //     }
+    //   );
+    //   return user;
+    // },
   },
+  // persist: {
+  //   storage: persistedState.localStorage,
+  // },
 });

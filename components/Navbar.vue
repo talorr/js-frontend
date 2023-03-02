@@ -6,7 +6,7 @@
       id="left_menu">
     <img src="~/assets/img/Logo.png" alt="#">
     <nav class="max-sm:flex justify-center items-center text-slate-500 sticky mt-5">
-      <nuxt-link to="/" class="hover:text-slate-900 max-lg:flex-col max-md:text-[.8175rem]" id="stateact">
+      <nuxt-link to="/" class="hover:text-slate-900 max-lg:flex-col max-md:text-[.8175rem]" exact>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
              stroke="currentColor" class="h-6 pr-4 max-lg:pr-0">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -14,7 +14,7 @@
         </svg>
         Главная
       </nuxt-link>
-      <nuxt-link to="/list" class="hover:text-slate-900 max-lg:flex-col max-md:text-[.8175rem]">
+      <nuxt-link to="/list" class="hover:text-slate-900 max-lg:flex-col max-md:text-[.8175rem]" exact>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
              stroke="currentColor" class="h-6 pr-4 max-lg:pr-0">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -22,7 +22,7 @@
         </svg>
         Cписок
       </nuxt-link>
-      <nuxt-link to="/catalog" class="hover:text-slate-900 max-lg:flex-col max-md:text-[.8175rem]">
+      <nuxt-link to="/catalog" class="hover:text-slate-900 max-lg:flex-col max-md:text-[.8175rem]" exact>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
              stroke="currentColor" class="h-6 pr-4 max-lg:pr-0">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -30,8 +30,11 @@
         </svg>
         Каталог
       </nuxt-link>
-      <nuxt-link v-if="router.currentRoute.value.name != 'login' && !authenticated" to="/login">
+      <nuxt-link to="/login">
         Войти
+      </nuxt-link>
+            <nuxt-link to="/register">
+        Регистрация
       </nuxt-link>
     </nav>
 
@@ -40,9 +43,10 @@
         <div class="avatar mr-3"
              style="background-image: url('https://sun9-53.userapi.com/impg/4R7XF21Onz9PnRVHzC90S9RSl5GGmiTetH_4Zw/LV5xwrvAAbo.jpg?size=1125x1109&quality=96&sign=350e44c3d7691d95bac76e7202faf4ce&type=album')">
         </div>
-        <div v-if="userData">
-          <p class="text-sm">{{ userData.name }}</p>
-          <p class="text-xs">{{ userData.email }}</p>
+        <div>
+          <p class="text-sm">UserName</p>
+          <p class="text-xs">Name</p>
+
         </div>
       </nuxt-link>
       <div class="flex justify-between w-40 mt-5">
@@ -74,7 +78,7 @@
         </a>
         <a class="hover:text-slate-900 max-lg:flex-col max-md:text-[.8175rem]"
            style="cursor:pointer"
-           v-if="authenticated"
+           
            @click.prevent="logout"
         >
           
@@ -93,21 +97,24 @@
 <script lang="ts" setup>
 import { useAuthStore } from '~/store/auth';
 const { logUserOut } = useAuthStore()
-const { getUser } = useAuthStore()
+const token = useCookie('cookie')
 const router = useRouter();
-const { authenticated } = useAuthStore(); // use authenticateUser action from  auth store
 const user = {
   username: "",
   email: ""
 }
 const logout = async () => {
-  await logUserOut() // call authenticateUser and pass the user object
-  // redirect to homepage if user is authenticated
+  await logUserOut() // call logout func
+
   router.push('/login');
 }
-const userData = await getUser();
+// const userData = await getUser();
+console.log(token.value)
 </script>
 
 <style scoped>
-
+a.router-link-active {
+    background-color: rgb(241, 245, 249);
+    color: rgb(30, 41, 59);
+}
 </style>

@@ -16,5 +16,20 @@ export const useDataStore = defineStore("data", {
       );
       return posts;
     },
+    async searchData(search: string) {
+      const token = useCookie("token");
+      const { data: searchResult } = await useFetch(
+        `http://localhost/laravel/public/api/posts/search/${search}`,
+        {
+          method: "get",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token.value}`,
+          },
+        }
+      );
+      console.log(searchResult, "gsagsag", "gsaga");
+      return searchResult;
+    },
   },
 });

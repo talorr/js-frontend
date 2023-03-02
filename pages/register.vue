@@ -4,22 +4,30 @@
     <main class="col-start-4 col-end-5 max-sm:w-11/12 max-sm:m-auto max-xl:col-start-3 max-xl:col-end-4 row-start-1 row-end-2">
 
         <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-          <div v-if="!authenticated" class="w-full max-w-md space-y-8">
+          <div class="w-full max-w-md space-y-8">
             <div>
 
               <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                 alt="Your Company">
-              <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Авторизация</h2>
+              <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Регистрация</h2>
             </div>
             <form class="mt-8 space-y-6" action="#" method="POST">
               <input type="hidden" name="remember" value="true">
               <div class="-space-y-px rounded-md shadow-sm">
                 <div>
-                  <label for="email-address" class="sr-only">Login</label>
-                  <input id="email-address" name="email" type="email" autocomplete="email" required
+                  <label for="email-address" class="sr-only">Никнейм</label>
+                  <input id="email-address" name="email" type="text" required
                     class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                    placeholder="Email"
+                    placeholder="Никнейм"
                     v-model="user.login"
+                    >
+                </div>
+                                <div>
+                  <label for="email-address" class="sr-only">Email</label>
+                  <input id="email-address" name="email" type="email" autocomplete="email" required
+                    class="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    placeholder="Email"
+                    v-model="user.email"
                     >
                 </div>
                 <div>
@@ -39,13 +47,16 @@
                   <label for="remember-me" class="ml-2 block text-sm text-gray-900">Запомнить меня</label>
                 </div>
         
-                <nuxt-link to="/register" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    Зарегистрироваться
+                <div class="text-sm">
+                <nuxt-link to="/login" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    Уже есть аккаунт?
                 </nuxt-link>
+
+                </div>
               </div>
         
               <div>
-                <button type="submit" @click.prevent="login"
+                <button type="submit" @click.prevent="res"
                   class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <!-- Heroicon name: mini/lock-closed -->
@@ -67,25 +78,29 @@
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia'; // import storeToRefs helper hook from pinia
-import { useAuthStore } from '~/store/auth'; // import the auth store we just created
-
-const { authenticateUser } = useAuthStore(); // use authenticateUser action from  auth store
-
-const { authenticated } = storeToRefs(useAuthStore()); // make authenticated state reactive with storeToRefs
 const user = ref({
-    login: '', 
-    password: '',
+    login: 'testuser5', 
+    email:'smth2@smth.com',
+    password: 'testuser5',
 });
+console.log()
 const router = useRouter();
+const res = async()=> {const response = await $fetch.raw("https://apiv1.noto.moe/user/register", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {
+          login: user.value.login,
+          email: user.value.email,
+          password: user.value.password,
+        },
+        credentials:'include'
 
-const login = async () => {
-  await authenticateUser(user.value); // call authenticateUser and pass the user object
-  // redirect to homepage if user is authenticated
-  if (authenticated) {
-    router.push('/');
-  }
-};
+      })
+      if(response.status==200)
+        router.push('/login');
+      }
 </script>
 
 <style scoped>

@@ -4,11 +4,13 @@
     <navbar></navbar>
     <main
         class="col-start-4 col-end-5 max-sm:w-11/12 max-sm:m-auto max-xl:col-start-3 max-xl:col-end-4 row-start-1 row-end-2">
-      <input type="search"
-             class="block p-2 m-auto mt-1 text-sm mb-1 max-sm:w-full w-3/6 focus:outline-slate-500 focus:text-slate-500"
-             placeholder="&#x1F50D;&#xFE0E;  Поиск...">
+     <search></search>
       <div>
-       <div><slider></slider></div>
+        <last-activity></last-activity>
+        <slider></slider>
+        <on-screen></on-screen>
+        <updates-ongoings></updates-ongoings>
+
       </div>
     </main>
   </div>
@@ -17,16 +19,15 @@
 <script>
 import Navbar from "~/components/Navbar.vue";
 import Slider from "~/components/slider.vue";
-definePageMeta({
-    middleware: 'auth'
-})
+import Search from "~/components/search.vue";
+import onScreen from "~/components/on-screen.vue";
+import lastActivity from "~/components/last-activity.vue";
+import updatesOngoings from "~/components/updates-ongoings.vue";
 export default {
   name: "index",
-  components: Navbar, Slider
-
+  components: Navbar, Slider, lastActivity, updatesOngoings, onScreen, Search
 }
 </script>
 
 <style scoped>
-
 </style>
